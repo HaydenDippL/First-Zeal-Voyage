@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/arya-orange/theme.css";
+@import "primeng/resources/primeng.css";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+div.fullscreen {
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+div.centered {
+    display: flex;
+    justify-content: center;
+}
+
+.large-margin-bottom {
+    margin-bottom: 5vh;
+}
+
+.medium-margin-bottom {
+    margin-bottom: 2vh;
+}
+
+.small-mragin-bottom {
+    margin-bottom: 1vh;
+}
+
+div.vbox {
+    flex-direction: column;
+}
+
+div.hbox {
+    flex-direction: row;
+}
