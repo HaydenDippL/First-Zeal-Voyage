@@ -30,7 +30,7 @@ export class TipsCalculatorComponent {
   state_sales_taxes: StateSalesTax[] = state_sales_taxes;
   selected_state: StateSalesTax | undefined;
   price: number | undefined;
-  tax_rate: number | undefined;
+  tax_rate: number = 0;
   include_tax_in_tip: boolean = false;
   tip_rate: number = 20;
 
@@ -43,11 +43,11 @@ export class TipsCalculatorComponent {
   calculate_total(): number {
     let tax: number = this.calculate_tax();
     let tip: number = this.calculate_tip();
-    return tax + tip;
+    return (this.price ?? 0) + tax + tip;
   }
 
-  nullify_tax_rate(): void {
-    this.tax_rate = undefined;
+  zero_tax_rate(): void {
+    this.tax_rate = 0;
   }
 
   nullify_state(): void {
@@ -55,7 +55,7 @@ export class TipsCalculatorComponent {
   }
 
   nullify_tax_rate_and_state(): void {
-    this.nullify_tax_rate();
+    this.zero_tax_rate();
     this.nullify_state();
   }
 
