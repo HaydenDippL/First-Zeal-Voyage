@@ -1,1 +1,70 @@
-<p>tips-calculator works!</p>
+<div class="fullscreen">
+    <div class="centered" style="padding: 2vh;">
+        <p-card [style]="{padding: '2vh', width: '37vw'}">
+            <h1>What's My Tip?</h1>
+            <p>This will become the tip calculator</p>
+            <div class="vbox">
+                <div class="medium-margin-bottom">
+                    <label for="price">Price:</label>
+                    <p-inputNumber
+                        [style]="{marginLeft: '0.3vw'}"
+                        [(ngModel)]="price"
+                        inputId="price"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                    />
+                </div>
+                <div class="medium-margin-bottom">
+                    <label for="include_tax">Include Tax in Tip:</label>
+                    <p-checkbox 
+                        [(ngModel)]="include_tax_in_tip"
+                        (ngModelChange)="nullify_tax_rate_and_state()"
+                        [binary]="true"
+                        inputId="include_tax"
+                    />
+                    <div *ngIf="include_tax_in_tip">
+                        <label for="tax_rate">Tax Rate</label>
+                        <p-dropdown
+                            [style]="{minWidth: '15vw'}"
+                            [options]="state_sales_taxes"
+                            [(ngModel)]="selected_state"
+                            (ngModelChange)="set_tax_rate()"
+                            placeholder="Select a State"
+                            optionLabel="state"
+                        />
+                        <p>Or</p>
+                        <p-inputNumber
+                            [(ngModel)]="tax_rate"
+                            (ngModelChange)="nullify_state()"
+                            inputId="tax_rate"
+                            mode="decimal"
+                            [minFractionDigits]="2"
+                            [maxFractionDigits]="2"
+                        />
+                    </div>
+                </div>
+                <div style="margin-top: 2vh;">
+                    <input 
+                        type="text"
+                        pInputText
+                        [(ngModel)]="tip_rate"
+                        class="w-full mb-3"
+                    />
+                    <p-slider 
+                        [min]="0"
+                        [max]="50"
+                        [style]="{marginTop: '12vh'}"
+                        [(ngModel)]="tip_rate"
+                        class="w-full"
+                    />
+                </div>
+            </div>
+            <div>
+                <h3 *ngIf="include_tax_in_tip">Tax: {{calculate_tax().toFixed(2)}}</h3>
+                <h2>Tip: {{calculate_tip().toFixed(2)}}</h2>
+                <h3>Total: {{calculate_total().toFixed(2)}}</h3>
+            </div>
+        </p-card>
+    </div>
+</div>
