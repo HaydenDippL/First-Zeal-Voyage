@@ -1,1 +1,48 @@
-<p>grocery-list works!</p>
+<div class="fullscreen">
+    <div class="centered">
+        <div class="card">
+            <div class="centered vbox">
+                <h1 [style]="{marginBottom: '2vh'}">Todo List</h1>
+                <label for="search">Search</label>
+                <input 
+                    pInputText 
+                    id="search" 
+                    aria-describedby="search-help"
+                    [(ngModel)]="query" />
+                <small id="search-help">
+                    Search for groceries or the names of those responsible to pick them up.
+                </small>
+                <p-dropdown 
+                    [style]="{marginBottom: '4vh'}"
+                    [options]="due_options" 
+                    [(ngModel)]="due_filter"
+                    [checkmark]="true" 
+                    [showClear]="true"
+                    placeholder="Due Filter"
+                    />
+                    <p-multiSelect 
+                    [style]="{marginBottom: '4vh'}"
+                    [options]="tag_options" 
+                    [(ngModel)]="tag_filters" 
+                    display="chip" 
+                    [showClear]="true"
+                    placeholder="Filter Tags" 
+                />
+                <div *ngFor="let item of filter(search(list))" class="vbox centered grocery-item">
+                    <div class="tags-container">
+                        <div *ngFor="let tag of item.tags"
+                            [class]="'tag ' + tag"
+                        >
+                            <p>{{tag}}</p>
+                        </div>
+                    </div>
+                    <h1>{{item.grocery}}</h1>
+                    <h4>quan. {{item.quantity}}</h4>
+                    <p *ngIf="item.due !== null">Needs to be picked up by: {{display_due(item.due)}}</p>
+                    <p>Posted: {{display_date(item.date)}}</p>
+                    <p *ngIf="item.assigned !== null">{{item.assigned}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
