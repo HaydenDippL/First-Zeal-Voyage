@@ -37,9 +37,11 @@ div.centered {
 }
 
 div.vbox {
+    display: flex;
     flex-direction: column;
 }
 
 div.hbox {
+    display: flex;
     flex-direction: row;
 }
