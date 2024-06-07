@@ -16,8 +16,8 @@ type Grocery = {
   quantity: number, // how many you're supposed to pick up
   tags: Tag[], // e.g. vegetables, urgent, meats, etc...
   date: DateTime, // when the item was posted (ALSO THE UUID for modification)
-  due: DateTime | undefined, // when the item needs to be picked up
-  assigned: string | undefined, // who is supposed to pick up the item
+  due: DateTime | null, // when the item needs to be picked up
+  assigned: string | null, // who is supposed to pick up the item
 }
 
 @Injectable({
@@ -51,7 +51,7 @@ export class GroceryListService {
         tags: [Tag.urgent, Tag.vegetable],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
-        assigned: undefined
+        assigned: null
       },
       {
         grocery: "Cinnamon",
