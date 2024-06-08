@@ -1,0 +1,11 @@
+#grocery-input {
+    flex: 2;
+}
+
+#quantity-input {
+    flex: 1;
+}
+
+.p-multiselect {
+    width: 30%;
+}

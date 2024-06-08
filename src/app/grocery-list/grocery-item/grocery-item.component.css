@@ -1,16 +1,14 @@
 div.grocery-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border: 2px solid var(--yellow-500);
     background-color: var(--surface-50);
     border-radius: 10px;
     margin-bottom: 1vh;
-    padding: 2vh;
-}
-
-div.card {
-    min-width: 54vw;
-    background-color: var(--surface-card);
-    padding: 4vh;
-    margin-top: 3vh;
+    padding: 1.3vh;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
 }
 
 div.tags-container {
@@ -25,6 +23,18 @@ div.tag {
     border-style: solid;
     border-radius: 2px;
     padding: 2px;
+}
+
+p.quantity {
+    margin-left: 0.5vw;
+    transform: translateY(-3px);
+    color: gray;
+    font-weight: 700;
+}
+
+p.date {
+    color: gray;
+    font-weight: 700;
 }
 
 div.Urgent {
@@ -63,7 +73,10 @@ div.Spice {
     background-color: rgb(97, 45, 45);
 }
 
-#dialog {
-    height: 80%;
-    width: 50%;
+.grocery-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    align-items: center;
 }
