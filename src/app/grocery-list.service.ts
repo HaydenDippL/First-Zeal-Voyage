@@ -2,23 +2,26 @@ import { Injectable } from '@angular/core';
 
 import { DateTime } from 'luxon';
 
-enum Tag {
+export enum Tag {
   urgent = "Urgent",
   nonessential = "Nonessential",
   meat = "Meat",
   vegetable = "Vegetable",
   fruit = "Fruit",
   spice = "Spice"
-}
+};
 
-type Grocery = {
+export const tag_options: Tag[] = [Tag.urgent, Tag.nonessential, Tag.meat, Tag.vegetable, Tag.fruit, Tag.spice];
+
+export type Grocery = {
   grocery: string, // the name of the grocery
   quantity: number, // how many you're supposed to pick up
   tags: Tag[], // e.g. vegetables, urgent, meats, etc...
   date: DateTime, // when the item was posted (ALSO THE UUID for modification)
   due: DateTime | null, // when the item needs to be picked up
   assigned: string | null, // who is supposed to pick up the item
-}
+  completed: boolean;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +38,8 @@ export class GroceryListService {
         tags: [Tag.urgent, Tag.meat],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
-        assigned: "Thomas"
+        assigned: "Thomas",
+        completed: false
       },
       {
         grocery: "Carrots",
@@ -43,7 +47,8 @@ export class GroceryListService {
         tags: [Tag.nonessential, Tag.vegetable],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 10, 18, 45),
-        assigned: "Hayden"
+        assigned: "Hayden",
+        completed: false
       },
       {
         grocery: "Apples",
@@ -51,7 +56,8 @@ export class GroceryListService {
         tags: [Tag.urgent, Tag.vegetable],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
-        assigned: null
+        assigned: null,
+        completed: false
       },
       {
         grocery: "Cinnamon",
@@ -59,7 +65,8 @@ export class GroceryListService {
         tags: [Tag.spice],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 10, 18, 45),
-        assigned: "Hayden"
+        assigned: "Hayden",
+        completed: false
       },
       {
         grocery: "Lobster",
@@ -67,7 +74,8 @@ export class GroceryListService {
         tags: [Tag.urgent, Tag.urgent, Tag.urgent, Tag.urgent, Tag.urgent, Tag.fruit],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
-        assigned: "Christian"
+        assigned: "Christian",
+        completed: false
       }
     ]
   }
@@ -76,13 +84,21 @@ export class GroceryListService {
     return this.grocery_list;
   }
 
+  get_tag_options(): Tag[] {
+    return tag_options;
+  }
+
   add_grocery(grocery: Grocery): void {
     // TODO: add API call to add grocery on the backend
+    console.log("saving");
     this.grocery_list.push(grocery);
+    console.log(this.grocery_list);
   }
 
   edit_grocery(posted_date: DateTime, new_grocery: Grocery): void {
     // TODO: add API call to edit grocery on the backend
+
+    console.log("Hello");
 
     let edit_grocery_index: number = this.grocery_list.findIndex(grocery => grocery.date === posted_date);
 

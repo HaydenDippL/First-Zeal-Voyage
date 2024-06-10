@@ -12,19 +12,11 @@ import { DialogModule } from 'primeng/dialog';
 
 import { DateTime } from 'luxon';
 
-import { GroceryListService } from '../grocery-list.service';
+import { GroceryListService, Grocery, Tag } from '../grocery-list.service';
 
 import { GroceryItemComponent } from './grocery-item/grocery-item.component';
 import { EditCreationPopupComponent } from './edit-creation-popup/edit-creation-popup.component';
-
-enum Tag {
-  urgent = "Urgent",
-  nonessential = "Nonessential",
-  meat = "Meat",
-  vegetable = "Vegetable",
-  fruit = "Fruit",
-  spice = "Spice"
-}
+import { ActionButtonsComponent } from './action-buttons/action-buttons.component';
 
 enum DueFilter {
   overdue = "Overdue",
@@ -39,15 +31,6 @@ enum Sorts {
   post_date = "Post Date",
   days_til_due = "Days Til Due",
   assigned = "Assigned"
-}
-
-type Grocery = {
-  grocery: string, // the name of the grocery
-  quantity: number, // how many you're supposed to pick up
-  tags: Tag[], // e.g. vegetables, urgent, meats, etc...
-  date: DateTime, // when the item was posted (ALSO THE UUID for modification)
-  due: DateTime | null, // when the item needs to be picked up
-  assigned: string | null, // who is supposed to pick up the item
 }
 
 @Component({
@@ -65,7 +48,8 @@ type Grocery = {
     ButtonModule,
     DialogModule,
     GroceryItemComponent,
-    EditCreationPopupComponent
+    EditCreationPopupComponent,
+    ActionButtonsComponent
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.css'
@@ -73,41 +57,13 @@ type Grocery = {
 export class GroceryListComponent {
   grocery_list_service = inject(GroceryListService);
   
-  add_to_list_dialog_visible: boolean = false;
-  show_dialog(): void {
-    this.add_to_list_dialog_visible = true;
-    this.temp_date = DateTime.now();
+  create_menu_visible: boolean = false;
+  
+  toggle_create_menu(): void {
+    this.create_menu_visible = !this.create_menu_visible;
   }
 
-  convert_js_date_to_luxon(date: Date): DateTime {
-    return DateTime.fromJSDate(date);
-  }
-
-  temp_grocery: string | undefined;
-  temp_quantity: number = 1;
-  temp_tags!: Tag[];
-  temp_due: Date[] | undefined;
-  temp_date!: DateTime;
-  temp_assigned: string | undefined;
-  add_grocery() {
-    // TODO:
-
-    // if (this.temp_grocery && this.temp_quantity && this.temp_tags && this.temp_due?.length === 1) {
-    //   this.list.push({
-    //     grocery: this.temp_grocery,
-    //     quantity: this.temp_quantity,
-    //     tags: this.temp_tags,
-    //     due: DateTime.fromJSDate(this.temp_due[0]),
-    //     date: DateTime.now(),
-    //     assigned: this.temp_assigned
-    //   })
-    // } else {
-    //   // missing required info
-    // }
-  }
-
-
-
+  // TODO: find error that prevents insertion of grocery without due date
   search_filter_sort(): Grocery[] {
     return this.sort(this.search(this.filter(this.grocery_list_service.get_grocery_list())));
   }
@@ -127,7 +83,6 @@ export class GroceryListComponent {
   due_options = [DueFilter.overdue, DueFilter.today, DueFilter.day, DueFilter.week];
   due_filter: DueFilter | undefined;
 
-  tag_options = [Tag.urgent, Tag.nonessential, Tag.meat, Tag.vegetable, Tag.fruit, Tag.spice];
   tag_filters: Tag[] = [];
   filter(list: Grocery[]): Grocery[] {
     const now: DateTime = DateTime.now();
@@ -175,18 +130,6 @@ export class GroceryListComponent {
     } else {
       return list.sort((a, b) => spaceship(a.assigned, b.date));
     }
-  }
-
-  display_due(due: DateTime): string {
-    const now: DateTime = DateTime.now();
-    if (due.year !== now.year) return due.toFormat("ccc',' LLL d 'at' T");
-    else return due.toFormat("ccc',' LLL d',' yyyy 'at' T");
-  }
-
-  display_date(date: DateTime): string {
-    const now: DateTime = DateTime.now();
-    if (date.year !== now.year) return date.toFormat("LLL d',' yyyy");
-    else return date.toFormat("LLL d");
   }
 }
 

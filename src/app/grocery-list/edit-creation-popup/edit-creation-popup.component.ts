@@ -1,4 +1,4 @@
-import { Component, Input, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -8,26 +8,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 
 import { DateTime } from 'luxon';
+import { Grocery, Tag } from '../../grocery-list.service';
 
 import { GroceryItemComponent } from '../grocery-item/grocery-item.component';
-
-enum Tag {
-  urgent = "Urgent",
-  nonessential = "Nonessential",
-  meat = "Meat",
-  vegetable = "Vegetable",
-  fruit = "Fruit",
-  spice = "Spice"
-}
-
-type Grocery = {
-  grocery: string, // the name of the grocery
-  quantity: number, // how many you're supposed to pick up
-  tags: Tag[], // e.g. vegetables, urgent, meats, etc...
-  date: DateTime, // when the item was posted (ALSO THE UUID for modification)
-  due: DateTime | null, // when the item needs to be picked up
-  assigned: string | null, // who is supposed to pick up the item
-}
+import { GroceryListService } from '../../grocery-list.service';
 
 @Component({
   selector: 'app-edit-creation-popup',
@@ -49,38 +33,60 @@ export class EditCreationPopupComponent {
   @Input() grocery: Grocery | undefined;
   @Input() mode: string = 'create';
   @Input() visible: boolean = false;
+  grocery_list_service = inject(GroceryListService);
+
+  temp_grocery!: Grocery;
+  js_due_date: Date | undefined;
 
   ngOnInit() {
-    if (!this.grocery) this.grocery = {
-      grocery: "",
-      quantity: 0,
-      tags: [],
-      date: DateTime.now(), // TODO: change so that this is datetime on post
-      due: null,
-      assigned: null
+    if (this.mode === 'create') {
+      this.temp_grocery = this.create_blank_grocery();
+    } else { // this.mode === 'edit'
+      this.temp_grocery = {
+        grocery: this.grocery!.grocery,
+        quantity: this.grocery!.quantity,
+        tags: this.grocery!.tags,
+        date: this.grocery!.date,
+        due: this.grocery!.due,
+        assigned: this.grocery!.assigned,
+        completed: false
+      }
+      if (this.temp_grocery.due) this.js_due_date = this.temp_grocery.due.toJSDate();
     }
+  }
+
+  save() {
+    if (this.mode === 'create') {
+      this.temp_grocery.date = DateTime.now();
+      this.grocery_list_service.add_grocery(this.temp_grocery);
+    } else { // this.mode === 'edit'
+      this.grocery_list_service.edit_grocery(this.grocery!.date, this.temp_grocery);
+    }
+
+    this.temp_grocery = this.create_blank_grocery();
+
+    this.visible = false;
+  }
+
+  update_temp_grocery_date(): void {
+    if (this.js_due_date) this.temp_grocery.due = DateTime.fromJSDate(this.js_due_date);
   }
 
   @Output() exit: EventEmitter<void> = new EventEmitter<void>();
   on_exit(): void {
     this.exit.emit();
-    this.visible = false;
+    // this.visible = false;
   }
 
-  // temp_grocery!: Grocery;
-
-  // temp_grocery: Grocery = JSON.parse(JSON.stringify(this.grocery));
-  tag_options = [Tag.urgent, Tag.nonessential, Tag.meat, Tag.vegetable, Tag.fruit, Tag.spice];
-  temp_grocery = {
-    grocery: "Lobster",
-    quantity: 20000,
-    tags: [Tag.urgent, Tag.fruit],
-    date: DateTime.local(2024, 6, 4, 12, 30),
-    due: DateTime.local(2024, 6, 5, 6, 30),
-    assigned: "Christian"
+  create_blank_grocery() {
+    return {
+      grocery: "",
+      quantity: 0,
+      tags: [],
+      date: DateTime.now(), // changed in save() to a new DateTime.now()
+      due: null,
+      assigned: null,
+      completed: false
+    };
   }
-
-  // ngOnInit() {
-  //   this.temp_grocery = JSON.parse(JSON.stringify(this.grocery));
-  // }
 }

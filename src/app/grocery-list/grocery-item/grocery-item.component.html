@@ -1,5 +1,5 @@
-<div class="hbox">
-    <div class="grocery-item" [ngStyle]="{'filter': checked ? 'grayscale(60%)' : null}">
+<div class="hbox fill-space">
+    <div class="grocery-item" [ngStyle]="{'filter': grocery.completed ? 'grayscale(60%)' : null}">
         <div>
             <div class="tags-container">
                 <div *ngFor="let tag of (grocery.tags ?? [])" class="hbox tags-container" [class]="'tag ' + tag">
@@ -18,32 +18,4 @@
             </div>
         </div>
     </div>
-    <div *ngIf="actions" class="grocery-actions vbox">
-        <p-button 
-            [icon]="'pi ' + ((checked) ? 'pi-times' : 'pi-check')"
-            (onClick)="toggle_completed()"
-            [pTooltip]="check_tooltip"
-            showDelay="800"
-        />
-            <ng-template #check_tooltip>
-                {{(checked) ? 'Un-complete' : 'Complete'}}
-            </ng-template>
-        <p-button 
-            icon="pi pi-pencil"
-            (onClick)="toggle_edit_menu()"
-            pTooltip="Edit"
-            showDelay="800"
-        />
-        <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            [disabled]="!this.checked"
-            pTooltip="Delete"
-            showDelay="800"
-        />
-<app-edit-creation-popup
-    [visible]="display_edit_menu"
-    [grocery]="grocery"
-    [mode]="'edit'"
-    (exit)="toggle_edit_menu()"
-/>
+</div>

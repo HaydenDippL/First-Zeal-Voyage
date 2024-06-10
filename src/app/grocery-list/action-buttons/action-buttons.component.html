@@ -1,0 +1,31 @@
+<div class="grocery-actions vbox">
+    <p-button 
+        [icon]="'pi ' + ((grocery.completed) ? 'pi-times' : 'pi-check')"
+        (onClick)="toggle_completed()"
+        [pTooltip]="check_tooltip"
+        showDelay="800"
+    />
+        <ng-template #check_tooltip>
+            {{(grocery.completed) ? 'Un-complete' : 'Complete'}}
+        </ng-template>
+    <p-button 
+        icon="pi pi-pencil"
+        (onClick)="toggle_edit_menu()"
+        pTooltip="Edit"
+        showDelay="800"
+    />
+    <p-button
+        icon="pi pi-trash"
+        severity="danger"
+        [disabled]="!grocery.completed"
+        (onClick)="trash()"
+        pTooltip="Delete"
+        showDelay="800"
+    />
+</div>
+<app-edit-creation-popup
+    [visible]="display_edit_menu"
+    [grocery]="grocery"
+    [mode]="'edit'"
+    (exit)="toggle_edit_menu()"
+/>
