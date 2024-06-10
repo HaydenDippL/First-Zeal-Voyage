@@ -17,6 +17,7 @@ import { GroceryListService } from '../../grocery-list.service';
 })
 export class GroceryItemComponent {
   @Input() grocery!: Grocery;
+  @Input() preview: boolean = false;
 
   grocery_list_service = inject(GroceryListService);
 

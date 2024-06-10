@@ -4,3 +4,7 @@ div.card {
     padding: 4vh;
     margin-top: 3vh;
 }
+
+app-grocery-item {
+    flex: 1;
+}

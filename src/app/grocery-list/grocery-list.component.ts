@@ -78,6 +78,8 @@ export class GroceryListComponent {
       return grocery_match || name_match;
     });
   }
+
+  // TODO: something wrong with the date filters
   
   due_options = [DueFilter.overdue, DueFilter.today, DueFilter.day, DueFilter.week];
   due_filter: DueFilter | undefined;
@@ -129,7 +131,7 @@ export class GroceryListComponent {
     } else if (this.sort_selected === Sorts.post_date) {
       return list.sort((a, b) => spaceship(a.date, b.date));
     } else {
-      return list.sort((a, b) => spaceship(a.assigned, b.date));
+      return list.sort((a, b) => spaceship(a.assigned, b.assigned));
     }
   }
 }

@@ -46,6 +46,27 @@ div.vbox {
 div.hbox {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+}
+
+.button {
+    width: 130px;
+    height: 50px
+}
+
+.dropdown {
+    height: 40px;
+    width: 150px;
+}
+
+.dropdown-item {
+    font-size: 30px;
+}
+
+.gap {
+    gap: 2vh;
+}
+
+label {
+    font-size: 36px;
 }

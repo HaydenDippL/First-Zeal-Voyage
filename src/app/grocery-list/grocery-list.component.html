@@ -1,55 +1,70 @@
 <div class="fullscreen">
     <div class="centered">
         <div class="card">
-            <div class="centered vbox">
-                <h1 [style]="{marginBottom: '2vh'}">Todo List</h1>
-                <label for="search">Search</label>
-                <input 
-                    pInputText 
-                    id="search" 
-                    aria-describedby="search-help"
-                    [(ngModel)]="query" />
-                <small id="search-help">
-                    Search for groceries or the names of those responsible to pick them up.
-                </small>
-                <p-dropdown 
-                    [style]="{marginBottom: '4vh'}"
-                    [options]="due_options" 
-                    [(ngModel)]="due_filter"
-                    [checkmark]="true" 
-                    [showClear]="true"
-                    placeholder="Due Filter"
-                />
-                <p-multiSelect 
-                    [style]="{marginBottom: '4vh'}"
-                    [options]="this.grocery_list_service.get_tag_options()" 
-                    [(ngModel)]="tag_filters" 
-                    display="chip" 
-                    [showClear]="true"
-                    placeholder="Filter Tags" 
-                />
-                <p-dropdown 
-                    [options]="sort_options" 
-                    [(ngModel)]="sort_selected" 
-                    [checkmark]="true" 
-                    [showClear]="true"
-                    placeholder="Sort"
-                />
+            <div class="centered vbox gap">
+                <h1 [style]="{marginBottom: '2vh', fontSize: '48px'}">Grocery List</h1>
+                <div class="vbox">
+                    <label for="search">Search</label>
+                    <input 
+                        pInputText 
+                        id="search" 
+                        aria-describedby="search-help"
+                        [(ngModel)]="query" />
+                    <small id="search-help">
+                        Search for groceries or the names of those responsible to pick them up.
+                    </small>
+                </div>
+                <div class="hbox">
+                    <div class="vbox" style="width: 33%">
+                        <label for="filter-dates">Date Filters</label>
+                        <p-dropdown 
+                            [style]="{width: '90%'}"
+                            id="filter-dates"
+                            [options]="due_options" 
+                            [(ngModel)]="due_filter"
+                            styleClass="dropdown"
+                            [showClear]="true"/>
+                    </div>
+                    <div class="vbox" style="width: 33%">
+                        <label for="tag-filters">Tag Filters</label>
+                        <p-multiSelect 
+                            [style]="{width: '90%'}"
+                            [options]="this.grocery_list_service.get_tag_options()" 
+                            [(ngModel)]="tag_filters" 
+                            [showClear]="true"
+                            [filter]="false"
+                            styleClass="dropdown"/>
+                    </div>
+                    <div class="vbox" style="width: 33%">
+                        <label for="sort">Sort</label>
+                        <p-dropdown
+                            [style]="{width: '90%'}"
+                            [options]="sort_options" 
+                            [(ngModel)]="sort_selected" 
+                            [checkmark]="true" 
+                            [showClear]="true"
+                            styleClass="dropdown"
+                            id="sort"/>
+                    </div>
+                </div>
                 <p-button 
                     label="Add Grocery"
                     (onClick)="toggle_create_menu()"
+                    styleClass="button"
                 />
-                <div *ngFor="let grocery of search_filter_sort()">
-                    <ng-template #grocery_template let-grocery="grocery">
-                        <app-grocery-item [grocery]="grocery"/>
-                    </ng-template>
-                    <ng-template #actions_template let-grocery="grocery">
-                        <app-action-buttons [grocery]="grocery" [post_date]="grocery.date"/>
-                    </ng-template>
-
-                    <div class="hbox">
-                        <ng-container *ngTemplateOutlet="grocery_template; context: {grocery: grocery}"/>
-                        <ng-container *ngTemplateOutlet="actions_template; context: {grocery: grocery}"/>
+                <div class="vbox">
+                    <div *ngFor="let grocery of search_filter_sort()">
+                        <ng-template #grocery_template let-grocery="grocery">
+                            <app-grocery-item [grocery]="grocery"/>
+                        </ng-template>
+                        <ng-template #actions_template let-grocery="grocery">
+                            <app-action-buttons [grocery]="grocery" [post_date]="grocery.date"/>
+                        </ng-template>
+    
+                        <div class="hbox" style="flex: 1">
+                            <ng-container *ngTemplateOutlet="grocery_template; context: {grocery: grocery}"/>
+                            <ng-container *ngTemplateOutlet="actions_template; context: {grocery: grocery}"/>
+                        </div>
                     </div>
                 </div>
             </div>
