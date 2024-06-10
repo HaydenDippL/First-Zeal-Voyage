@@ -63,7 +63,6 @@ export class GroceryListComponent {
     this.create_menu_visible = !this.create_menu_visible;
   }
 
-  // TODO: find error that prevents insertion of grocery without due date
   search_filter_sort(): Grocery[] {
     return this.sort(this.search(this.filter(this.grocery_list_service.get_grocery_list())));
   }
@@ -85,6 +84,8 @@ export class GroceryListComponent {
 
   tag_filters: Tag[] = [];
   filter(list: Grocery[]): Grocery[] {
+    if (this.tag_filters.length === 0) return list;
+
     const now: DateTime = DateTime.now();
     return list.filter(item => {
       let due_match: boolean = true;
