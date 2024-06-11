@@ -8,6 +8,8 @@ import { Grocery } from '../../grocery-list.service';
 
 import { GroceryListService } from '../../grocery-list.service';
 
+// TODO: Add a better and more indicative crossout feature
+
 @Component({
   selector: 'app-grocery-item',
   standalone: true,

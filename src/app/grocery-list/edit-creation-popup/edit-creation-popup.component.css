@@ -9,3 +9,7 @@
 .p-multiselect {
     width: 30%;
 }
+
+::ng-deep input[pInputText].text {
+    font-size: 16px !important; /* Adjust font size for the input itself */
+}

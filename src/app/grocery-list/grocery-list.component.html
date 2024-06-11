@@ -2,56 +2,60 @@
     <div class="centered">
         <div class="card">
             <div class="centered vbox gap">
-                <h1 [style]="{marginBottom: '2vh', fontSize: '48px'}">Grocery List</h1>
-                <div class="vbox">
-                    <label for="search">Search</label>
-                    <input 
-                        pInputText 
-                        id="search" 
-                        aria-describedby="search-help"
-                        [(ngModel)]="query" />
-                    <small id="search-help">
-                        Search for groceries or the names of those responsible to pick them up.
-                    </small>
-                </div>
-                <div class="hbox">
-                    <div class="vbox" style="width: 33%">
-                        <label for="filter-dates">Date Filters</label>
-                        <p-dropdown 
-                            [style]="{width: '90%'}"
-                            id="filter-dates"
-                            [options]="due_options" 
-                            [(ngModel)]="due_filter"
-                            styleClass="dropdown"
-                            [showClear]="true"/>
+                <h1 [style]="{fontSize: '48px'}">Grocery List</h1>
+                <div class="hbox" style="gap: 3vw; align-items: flex-start;">
+                    <div class="vbox" style="flex: 1; gap: 3vh;">
+                        <div class="vbox">
+                            <label for="search">Search</label>
+                            <input 
+                                pInputText
+                                class="text"
+                                type="text"
+                                [(ngModel)]="query" />
+                            
+                        </div>
+                        <div class="hbox gap">
+                            <div class="vbox" style="flex: 1;">
+                                <label for="filter-dates">Date Filters</label>
+                                <p-dropdown 
+                                    id="filter-dates"
+                                    class="custom-dropdown"
+                                    [style]="{width: '100%'}"
+                                    [options]="due_options" 
+                                    [showClear]="true"
+                                    [(ngModel)]="due_filter"/>
+                            </div>
+                            <div class="vbox" style="flex: 1;">
+                                <label for="sort">Sort</label>
+                                <p-dropdown
+                                    [options]="sort_options" 
+                                    class="custom-dropdown"
+                                    [style]="{width: '100%'}"
+                                    [(ngModel)]="sort_selected" 
+                                    [checkmark]="true" 
+                                    [showClear]="true"
+                                    id="sort"/>
+                            </div>
+                        </div>
+                        <p-button 
+                            label="Add Grocery"
+                            [style]="{width: '100%'}"
+                            (onClick)="toggle_create_menu()"
+                            styleClass="button"
+                        />
                     </div>
-                    <div class="vbox" style="width: 33%">
+                    <div class="vbox" style="gap: 10px;">
                         <label for="tag-filters">Tag Filters</label>
-                        <p-multiSelect 
-                            [style]="{width: '90%'}"
-                            [options]="this.grocery_list_service.get_tag_options()" 
-                            [(ngModel)]="tag_filters" 
-                            [showClear]="true"
-                            [filter]="false"
-                            styleClass="dropdown"/>
-                    </div>
-                    <div class="vbox" style="width: 33%">
-                        <label for="sort">Sort</label>
-                        <p-dropdown
-                            [style]="{width: '90%'}"
-                            [options]="sort_options" 
-                            [(ngModel)]="sort_selected" 
-                            [checkmark]="true" 
-                            [showClear]="true"
-                            styleClass="dropdown"
-                            id="sort"/>
+                        <div *ngFor="let tag_option of this.grocery_list_service.get_tag_options()" class="field-checkbox">
+                            <p-checkbox
+                                [(ngModel)]="tag_filters"
+                                [label]="tag_option"
+                                name="group"
+                                [value]="tag_option"
+                            />
+                        </div>
                     </div>
                 </div>
-                <p-button 
-                    label="Add Grocery"
-                    (onClick)="toggle_create_menu()"
-                    styleClass="button"
-                />
                 <div class="vbox">
                     <div *ngFor="let grocery of search_filter_sort()">
                         <ng-template #grocery_template let-grocery="grocery">

@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { DateTime } from 'luxon';
 
@@ -20,9 +21,9 @@ import { ActionButtonsComponent } from './action-buttons/action-buttons.componen
 
 enum DueFilter {
   overdue = "Overdue",
-  today = "Due Today",
-  day = "Due in One Day",
-  week = "Due in One Week"
+  today = "Today",
+  day = "Tomorrow",
+  week = "Week"
 }
 
 enum Sorts {
@@ -42,6 +43,7 @@ enum Sorts {
     AutoCompleteModule,
     DropdownModule,
     MultiSelectModule,
+    CheckboxModule,
     InputNumberModule,
     CalendarModule,
     CardModule,
@@ -49,7 +51,7 @@ enum Sorts {
     DialogModule,
     GroceryItemComponent,
     EditCreationPopupComponent,
-    ActionButtonsComponent
+    ActionButtonsComponent,
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.css'

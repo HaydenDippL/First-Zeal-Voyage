@@ -8,3 +8,7 @@ div.card {
 app-grocery-item {
     flex: 1;
 }
+
+::ng-deep input[pInputText] {
+    font-size: 16px; /* Adjust font size for the input itself */
+}

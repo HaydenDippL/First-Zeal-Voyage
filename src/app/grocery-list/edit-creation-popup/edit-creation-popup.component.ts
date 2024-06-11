@@ -6,6 +6,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { DateTime } from 'luxon';
 import { Grocery, Tag } from '../../grocery-list.service';
@@ -24,7 +26,9 @@ import { GroceryListService } from '../../grocery-list.service';
     MultiSelectModule,
     CalendarModule,
     FormsModule,
-    GroceryItemComponent
+    GroceryItemComponent,
+    CommonModule,
+    CheckboxModule
   ],
   templateUrl: './edit-creation-popup.component.html',
   styleUrl: './edit-creation-popup.component.css'
@@ -45,6 +49,7 @@ export class EditCreationPopupComponent {
       this.temp_grocery = {
         grocery: this.grocery!.grocery,
         quantity: this.grocery!.quantity,
+        units: this.grocery!.units,
         tags: this.grocery!.tags,
         date: this.grocery!.date,
         due: this.grocery!.due,
@@ -82,6 +87,7 @@ export class EditCreationPopupComponent {
     return {
       grocery: "",
       quantity: 0,
+      units: "",
       tags: [],
       date: DateTime.now(), // changed in save() to a new DateTime.now()
       due: null,

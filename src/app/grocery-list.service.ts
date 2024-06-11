@@ -16,6 +16,7 @@ export const tag_options: Tag[] = [Tag.urgent, Tag.nonessential, Tag.meat, Tag.v
 export type Grocery = {
   grocery: string, // the name of the grocery
   quantity: number, // how many you're supposed to pick up
+  units: string, // units, e.g. dozens, bushels, oz
   tags: Tag[], // e.g. vegetables, urgent, meats, etc...
   date: DateTime, // when the item was posted (ALSO THE UUID for modification)
   due: DateTime | null, // when the item needs to be picked up
@@ -35,6 +36,7 @@ export class GroceryListService {
       {
         grocery: "Eggs",
         quantity: 1,
+        units: "dozen",
         tags: [Tag.urgent, Tag.meat],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
@@ -44,6 +46,7 @@ export class GroceryListService {
       {
         grocery: "Carrots",
         quantity: 5,
+        units: "",
         tags: [Tag.nonessential, Tag.vegetable],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 10, 18, 45),
@@ -53,6 +56,7 @@ export class GroceryListService {
       {
         grocery: "Apples",
         quantity: 3,
+        units: "",
         tags: [Tag.urgent, Tag.vegetable],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
@@ -61,7 +65,8 @@ export class GroceryListService {
       },
       {
         grocery: "Cinnamon",
-        quantity: 1,
+        quantity: 6,
+        units: "ounces",
         tags: [Tag.spice],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 10, 18, 45),
@@ -71,6 +76,7 @@ export class GroceryListService {
       {
         grocery: "Lobster",
         quantity: 20000,
+        units: "",
         tags: [Tag.urgent, Tag.urgent, Tag.urgent, Tag.urgent, Tag.urgent, Tag.fruit],
         date: DateTime.local(2024, 6, 4, 12, 30),
         due: DateTime.local(2024, 6, 5, 6, 30),
