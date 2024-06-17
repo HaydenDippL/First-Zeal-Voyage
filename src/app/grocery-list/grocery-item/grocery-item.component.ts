@@ -9,6 +9,7 @@ import { Grocery } from '../../grocery-list.service';
 import { GroceryListService } from '../../grocery-list.service';
 
 // TODO: Add a better and more indicative crossout feature
+// TODO: Change the preview helpers to Who? What? When?
 
 @Component({
   selector: 'app-grocery-item',
