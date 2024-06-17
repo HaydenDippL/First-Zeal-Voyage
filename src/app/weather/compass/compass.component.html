@@ -1,0 +1,94 @@
+<svg id="compass" [attr.height]="size" [attr.width]="size">
+    <g id="ticks">
+        <line *ngFor="let dial_line of dial_lines"
+            [attr.x1]="dial_line.p1.x"
+            [attr.y1]="dial_line.p1.y"
+            [attr.x2]="dial_line.p2.x"
+            [attr.y2]="dial_line.p2.y"
+            [attr.stroke]="dial_line.color"
+            [attr.stroke-width]="size / 200"
+        />
+    </g>
+    <g id="metrics">
+        <text
+            fill="white"
+            [attr.x]="size / 2"
+            [attr.y]="size / 2"
+            text-anchor="middle"
+            [attr.font-size]="size / 5"
+        >20</text>
+        <text
+            fill="gray"
+            [attr.x]="size / 2"
+            [attr.y]="size * 0.6"
+            text-anchor="middle"
+            [attr.font-size]="size / 10"
+        >mph</text>
+    </g>
+    <g id="directions">
+        <text
+            [attr.x]="(0.5 * this.size)"
+            [attr.y]="(0.5 * this.size) - (0.7 * radius)"
+            [attr.font-size]="size / 10"
+            text-anchor="middle"
+            fill="gray"
+        >N</text>
+        <text
+            [attr.x]="(0.5 * this.size) + (0.83 * radius)"
+            [attr.y]="(0.54 * this.size)"
+            [attr.font-size]="size / 10"
+            text-anchor="middle"
+            fill="gray"
+        >E</text>
+        <text
+            [attr.x]="(0.5 * this.size)"
+            [attr.y]="(0.5 * this.size) + (0.9 * radius)"
+            [attr.font-size]="size / 10"
+            text-anchor="middle"
+            fill="gray"
+        >S</text>
+        <text
+            [attr.x]="(0.5 * this.size) - (0.8 * radius)"
+            [attr.y]="(0.54 * this.size)"
+            [attr.font-size]="size / 10"
+            text-anchor="middle"
+            fill="gray"
+        >W</text>
+    </g>
+    <g id="dial" [style]="{
+        transformOrigin: 'center',
+        transform: 'rotate(265deg)'
+    }">
+        <path
+            id="arrow"
+            [attr.d]="create_arrow_head_path()"
+            fill="white"
+        />
+        <line
+            id="arrow-line"
+            [attr.x1]="size / 2"
+            [attr.y1]="0.18 * size + padding"
+            [attr.x2]="size / 2"
+            [attr.y2]="padding"
+            [attr.stroke-width]="size / 80"
+            stroke="white"
+        />
+        <line 
+            id="tail-line"
+            [attr.x1]="size / 2"
+            [attr.y1]="0.82 * size - padding"
+            [attr.x2]="size / 2"
+            [attr.y2]="size - padding"
+            [attr.stroke-width]="size / 80"
+            stroke="white"
+        />
+        <circle
+            id="tail-circle"
+            [attr.cx]="size / 2"
+            [attr.cy]="size - padding + line_length / 2"
+            [attr.r]="line_length / 1.95"
+            [attr.stroke-width]="size / 100"
+            stroke="white"
+        />
+    </g>
+</svg>
