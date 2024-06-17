@@ -68,7 +68,7 @@
                             <app-grocery-item [grocery]="grocery"/>
                         </ng-template>
                         <ng-template #actions_template let-grocery="grocery">
-                            <app-action-buttons [grocery]="grocery" [post_date]="grocery.date"/>
+                            <app-action-buttons [grocery]="grocery" [post_date]="grocery.posted"/>
                         </ng-template>
     
                         <div class="hbox" style="flex: 1">

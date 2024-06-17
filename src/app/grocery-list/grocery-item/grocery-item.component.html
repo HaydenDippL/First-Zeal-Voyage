@@ -14,7 +14,7 @@
         <div class="hbox">
             <div>
                 <h3>{{(preview) ? grocery.assigned ?? "Who will pick it up?" : grocery.assigned ?? ""}}</h3>
-                <p *ngIf="grocery.due" class="date">{{grocery.due.toFormat("L/d/yy t")}}</p>
+                <p *ngIf="grocery.pickup" class="date">{{grocery.pickup.toFormat("L/d/yy t")}}</p>
             </div>
         </div>
     </div>

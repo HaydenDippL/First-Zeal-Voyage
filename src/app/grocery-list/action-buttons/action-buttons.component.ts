@@ -41,6 +41,8 @@ export class ActionButtonsComponent {
   }
 
   trash() {
+    console.log("delete");
+    console.log(this.post_date);
     this.grocery_list_service.delete_grocery(this.post_date);
   }
 }

@@ -34,6 +34,8 @@ enum Sorts {
   assigned = "Assigned"
 }
 
+// FIXME: animate groceries coming in an out of frame
+
 @Component({
   selector: 'app-grocery-list',
   standalone: true,
@@ -93,18 +95,18 @@ export class GroceryListComponent {
     const now: DateTime = DateTime.now();
     return list.filter(item => {
       let due_match: boolean = true;
-      if (item.due === null) {
+      if (item.pickup === null) {
         due_match = false;
       } else if (this.due_filter === DueFilter.overdue) {
-        due_match = now > item.due;
+        due_match = now > item.pickup;
       } else if (this.due_filter === DueFilter.today) {
-        due_match = now.day === item.due.day && now.month === item.due.month && now.year === item.due.year && now < item.due;
+        due_match = now.day === item.pickup.day && now.month === item.pickup.month && now.year === item.pickup.year && now < item.pickup;
       } else if (this.due_filter === DueFilter.day) {
         const day: DateTime = now.plus({days: 1});
-        due_match = item.due < day && item.due > now;
+        due_match = item.pickup < day && item.pickup > now;
       } else if (this.due_filter === DueFilter.week) {
         const week: DateTime = now.plus({days: 7});
-        due_match = item.due < week && item.due > now;
+        due_match = item.pickup < week && item.pickup > now;
       }
       
       let tag_match: boolean = true;
@@ -123,15 +125,15 @@ export class GroceryListComponent {
     else if (this.sort_selected === Sorts.alphabetical) {
       return list.sort((a, b) => spaceship(a.grocery.toLowerCase(), b.grocery.toLowerCase()));
     } else if (this.sort_selected === Sorts.due_date) {
-      return list.sort((a, b) => spaceship(a.due, b.due));
+      return list.sort((a, b) => spaceship(a.pickup, b.pickup));
     } else if (this.sort_selected === Sorts.days_til_due) {
       const now: DateTime = DateTime.now();
       return list.sort((a, b) => {
-        return spaceship((a.due) ? now.diff(a.due).as('milliseconds') : undefined, 
-          (b.due) ? now.diff(b.due).as('milliseconds') : undefined);
+        return spaceship((a.pickup) ? now.diff(a.pickup).as('milliseconds') : undefined, 
+          (b.pickup) ? now.diff(b.pickup).as('milliseconds') : undefined);
       });
     } else if (this.sort_selected === Sorts.post_date) {
-      return list.sort((a, b) => spaceship(a.date, b.date));
+      return list.sort((a, b) => spaceship(a.posted, b.posted));
     } else {
       return list.sort((a, b) => spaceship(a.assigned, b.assigned));
     }

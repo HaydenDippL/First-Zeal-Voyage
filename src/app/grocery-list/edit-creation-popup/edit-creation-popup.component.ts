@@ -51,21 +51,21 @@ export class EditCreationPopupComponent {
         quantity: this.grocery!.quantity,
         units: this.grocery!.units,
         tags: this.grocery!.tags,
-        date: this.grocery!.date,
-        due: this.grocery!.due,
+        posted: this.grocery!.posted,
+        pickup: this.grocery!.pickup,
         assigned: this.grocery!.assigned,
         completed: false
       }
-      if (this.temp_grocery.due) this.js_due_date = this.temp_grocery.due.toJSDate();
+      if (this.temp_grocery.pickup) this.js_due_date = this.temp_grocery.pickup.toJSDate();
     }
   }
 
   save() {
     if (this.mode === 'create') {
-      this.temp_grocery.date = DateTime.now();
+      this.temp_grocery.posted = DateTime.now();
       this.grocery_list_service.add_grocery(this.temp_grocery);
     } else { // this.mode === 'edit'
-      this.grocery_list_service.edit_grocery(this.grocery!.date, this.temp_grocery);
+      this.grocery_list_service.edit_grocery(this.grocery!.posted, this.temp_grocery);
     }
 
     this.temp_grocery = this.create_blank_grocery();
@@ -74,7 +74,7 @@ export class EditCreationPopupComponent {
   }
 
   update_temp_grocery_date(): void {
-    if (this.js_due_date) this.temp_grocery.due = DateTime.fromJSDate(this.js_due_date);
+    if (this.js_due_date) this.temp_grocery.pickup = DateTime.fromJSDate(this.js_due_date);
   }
 
   @Output() exit: EventEmitter<void> = new EventEmitter<void>();
@@ -89,8 +89,8 @@ export class EditCreationPopupComponent {
       quantity: 0,
       units: "",
       tags: [],
-      date: DateTime.now(), // changed in save() to a new DateTime.now()
-      due: null,
+      posted: DateTime.now(), // changed in save() to a new DateTime.now()
+      pickup: null,
       assigned: null,
       completed: false
     };
