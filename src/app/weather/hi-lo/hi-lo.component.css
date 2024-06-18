@@ -1,0 +1,41 @@
+/* container styles */
+.container {
+    display: inline-flex;
+    /*display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;*/ /* Full viewport height to center vertically */
+}
+/* container styles */
+.containers {
+    display: inline-flex;
+    
+    
+}
+/* inline-block styles */
+.inline-block {
+    padding: 0.5rem; /* reduced padding */
+    border: 2px solid #D1D5DB; /* equivalent to border-gray-300 */
+    border-radius: 0.5rem; /* equivalent to rounded-lg */
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    margin: auto;
+}
+
+/* margin bottom for the top icon */
+.mb-2 {
+    margin-bottom: 0.25rem; /* reduced margin-bottom */
+}
+
+/* text-red-500 styles */
+.text-red-500 {
+    color: #EF4444; /* equivalent to text-red-500 */
+}
+
+/* text-blue-500 styles */
+.text-blue-500 {
+    color: #3B82F6; /* equivalent to text-blue-500 */
+}
