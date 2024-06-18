@@ -53,7 +53,7 @@ export class CompassComponent {
       };
 
       let color: string;
-      if (deg % 90 === 0) color = 'white';
+      if (deg % 90 === 0) color = 'black';
       else if (deg % 30 === 0) color = 'red';
       else color = 'gray';
 
