@@ -11,7 +11,7 @@
     </g>
     <g id="metrics">
         <text
-            fill="white"
+            fill="black"
             [attr.x]="size / 2"
             [attr.y]="size / 2"
             text-anchor="middle"
@@ -62,7 +62,7 @@
         <path
             id="arrow"
             [attr.d]="create_arrow_head_path()"
-            fill="white"
+            fill="black"
         />
         <line
             id="arrow-line"
@@ -71,7 +71,7 @@
             [attr.x2]="size / 2"
             [attr.y2]="padding"
             [attr.stroke-width]="size / 80"
-            stroke="white"
+            stroke="black"
         />
         <line 
             id="tail-line"
@@ -80,7 +80,7 @@
             [attr.x2]="size / 2"
             [attr.y2]="size - padding"
             [attr.stroke-width]="size / 80"
-            stroke="white"
+            stroke="black"
         />
         <circle
             id="tail-circle"
@@ -88,7 +88,8 @@
             [attr.cy]="size - padding + line_length / 2"
             [attr.r]="line_length / 1.95"
             [attr.stroke-width]="size / 100"
-            stroke="white"
+            stroke="black"
+            fill="none"
         />
     </g>
 </svg>
