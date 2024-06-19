@@ -30,6 +30,14 @@ div.centered {
     justify-content: center;
 }
 
+div.blur-box {
+    background: rgba(255, 255, 255, 0.4); /* White with 30% opacity */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    border-radius: 10px; /* Optional: rounded corners */
+    padding: 20px;
+    margin: 10px;
+}
+
 .large-margin-bottom {
     margin-bottom: 5vh;
 }

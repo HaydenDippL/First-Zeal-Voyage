@@ -1,18 +1,16 @@
-<!-- <div class="weather-container">
-    <input id="cityInput" type="text" [(ngModel)]="city" placeholder="Enter city" />
-    <button (click)="getWeather()">Get Weather</button>
-  
-    <div *ngIf="temperature !== null">
-      <p id="temperature">Temperature: {{ temperature }}°F</p>
-      <p id="temperaturehigh">High: {{ temperatureHigh }}°F</p>
-      <p id="temperaturelow">Low: {{ temperatureLow }}°F</p>
-      <p id="feelslike">Feels Like: {{ feelsLike }}°F</p>
-      <p id="outside">Humidity: {{ outsideHumidity }}%</p>
-      <p id="rain">Condition: {{ rainCondition }}</p>
-      <p id="sunrise">Sunrise: {{ sunriseTime }}</p>
+<div class="flex flex-col flex-start items-center h-screen w-screen bg-cover bg-center" [style]="{
+    backgroundImage: 'url(https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fdata.1freewallpapers.com%2Fdownload%2Fsnowy-mountains-in-the-sunlight.jpg&f=1&nofb=1&ipt=4ddd4f4bcd6831f04259c015f9e945bb23209ab77a6a0619c229c422217a174a&ipo=images)'
+}">
+    <app-city-header/>
+    <div class="flex flex-row">
+        <div class="h-full">
+            <app-humidity/>
+        </div>
+        <div class="h-full">
+            <app-hi-lo/>
+        </div>
+        <div class="h-full">
+            <app-wind/>
+        </div>
     </div>
-  
-    <div id="currentTime">Current Time: {{ currentTime }}</div>
-    <div id="clock">Clock: {{ clockTime }}</div>
-  </div> -->
-  
+</div>

@@ -1,41 +1,18 @@
-//import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-weather',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './weather.component.html',
-//   styleUrl: './weather.component.css'
-// })
-// export class WeatherComponent {
-
-// }
-// Declare function to fetch weather data
-import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { WeatherService } from '../weather.service';
-
-interface WeatherData {
-  name: string;
-  main: {
-    temp: number;
-    temp_max: number;
-    temp_min: number;
-    feels_like: number;
-    humidity: number;
-  };
-  weather: {
-    main: string;
-  }[];
-  sys: {
-    sunrise: number;
-  };
-}
+import { Component } from '@angular/core';
+import { CityHeaderComponent } from './city-header/city-header.component';
+import { HumidityComponent } from './humidity/humidity.component';
+import { WindComponent } from './wind/wind.component';
+import { HiLoComponent } from './hi-lo/hi-lo.component';
 
 @Component({
   selector: 'app-weather',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    CityHeaderComponent,
+    HumidityComponent,
+    WindComponent,
+    HiLoComponent
+  ],
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
