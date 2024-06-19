@@ -11,8 +11,9 @@
 
 // }
 // Declare function to fetch weather data
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { WeatherService } from '../weather.service';
 
 interface WeatherData {
   name: string;
@@ -38,7 +39,8 @@ interface WeatherData {
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent {
+  weather_service = inject(WeatherService)
 
   apiKey = '92928b8e37b84d9658c4ba6b1c94ee41';
   city: string = '';
