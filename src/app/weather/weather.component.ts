@@ -4,6 +4,8 @@ import { HumidityComponent } from './humidity/humidity.component';
 import { WindComponent } from './wind/wind.component';
 import { HiLoComponent } from './hi-lo/hi-lo.component';
 import { TemperatureChartComponent } from './temperature-chart/temperature-chart.component';
+import { UvIndexComponent } from './uv-index/uv-index.component';
+import { PrecipitationComponent } from './precipitation/precipitation.component';
 @Component({
   selector: 'app-weather',
   standalone: true,
@@ -12,7 +14,9 @@ import { TemperatureChartComponent } from './temperature-chart/temperature-chart
     HumidityComponent,
     WindComponent,
     HiLoComponent,
-    TemperatureChartComponent
+    TemperatureChartComponent,
+    UvIndexComponent,
+    PrecipitationComponent
   ],
   templateUrl: './weather.component.html',
   styleUrl: './weather.component.css'
