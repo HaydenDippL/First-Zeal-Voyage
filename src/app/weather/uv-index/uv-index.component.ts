@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-uv-index',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './uv-index.component.css'
 })
 export class UvIndexComponent {
-
+  @Input() uv!: number;
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-hi-lo',
@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './hi-lo.component.css'
 })
 export class HiLoComponent {
-
+  @Input() hi!: number;
+  @Input() lo!: number
 }

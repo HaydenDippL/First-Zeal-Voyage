@@ -16,7 +16,7 @@
             [attr.y]="size / 2"
             text-anchor="middle"
             [attr.font-size]="size / 5"
-        >20</text>
+        >{{wind_speed}}</text>
         <text
             fill="gray"
             [attr.x]="size / 2"
@@ -57,7 +57,7 @@
     </g>
     <g id="dial" [style]="{
         transformOrigin: 'center',
-        transform: 'rotate(265deg)'
+        transform: 'rotate(' + wind_direction + 'deg)'
     }">
         <path
             id="arrow"

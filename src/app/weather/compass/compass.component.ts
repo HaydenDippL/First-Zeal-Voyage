@@ -24,6 +24,8 @@ type line = {
 })
 export class CompassComponent {
   @Input() size!: number;
+  @Input() wind_speed!: number;
+  @Input() wind_direction!: number;
   padding!: number;
   line_length!: number;
   radius!: number;

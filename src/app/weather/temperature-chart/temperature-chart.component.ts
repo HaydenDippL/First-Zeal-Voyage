@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import Chroma from 'chroma-js';
+import { DateTime } from 'luxon';
+import { arrayBuffer } from 'stream/consumers';
 
 @Component({
   selector: 'app-temperature-chart',
@@ -11,21 +14,24 @@ import { ChartModule } from 'primeng/chart';
   styleUrl: './temperature-chart.component.css'
 })
 export class TemperatureChartComponent {
+  @Input() temperatures!: number[];
   temperature_chart_data!: any;
   temperature_chart_options!: any;
   
   ngOnInit() {
+    // const data = [77, 82, 93, 96, 95, 98, 90];
+    const colors = this.temperatures.map(temp => this.temperature_color_scale(temp));
+    const now: DateTime = DateTime.now();
+
     this.temperature_chart_data = {
-      labels: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+      labels: Array.from({ length: 7 }, (_, i) => now.plus({days: i}).toFormat("ccc")),
       datasets: [
         {
-          data: [77, 82, 93, 96, 95, 98, 90],
-          backgroundColor: ['black', 'black', 'black', 'black', 'black', 'black', 'black']
+          data: this.temperatures,
+          backgroundColor: colors
         }
       ]
     };
-
-    const data = [77, 82, 93, 96, 95, 98, 90]
 
     this.temperature_chart_options = {
       plugins: {
@@ -44,8 +50,8 @@ export class TemperatureChartComponent {
           }
         },
         y: {
-          min: Math.min(...data) - 5,
-          max: Math.max(...data) + 3,
+          min: Math.min(...this.temperatures) - 5,
+          max: Math.max(...this.temperatures) + 3,
           ticks: {
             stepSize: 5,
             callback: function(value: number) {
@@ -64,5 +70,26 @@ export class TemperatureChartComponent {
         }
       }
     };
+  }
+
+  temperature_color_scale(temp: number): string {
+    const red: string = 'rgb(202, 2, 2)';
+    const yellow: string = 'rgb(237, 174, 28)';
+    const white: string = 'rgb(228, 254, 255)';
+    const blue: string = 'rgb(81, 243, 249)';
+    const deep_blue: string = 'rgb(17, 97, 100)';
+
+    const red_start: number = 100;
+    const yellow_start: number = 72;
+    const white_start: number = 46;
+    const blue_start: number = 0;
+    const deep_blue_start: number = -20;
+
+    if (temp >= red_start) return red;
+    else if (temp >= yellow_start) return Chroma.scale([yellow, red]).mode('lch').domain([yellow_start, red_start])(temp).hex();
+    else if (temp >= white_start) return Chroma.scale([white, yellow]).mode('lch').domain([white_start, yellow_start])(temp).hex();
+    else if (temp >= blue_start) return Chroma.scale([blue, white]).mode('lch').domain([blue_start, white_start])(temp).hex();
+    else if (temp >= deep_blue_start) return Chroma.scale([deep_blue, blue]).mode('lch').domain([deep_blue_start, blue_start])(temp).hex();
+    else return deep_blue;
   }
 }
