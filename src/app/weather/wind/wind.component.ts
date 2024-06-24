@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { WeatherService } from '../../weather.service';
 import { CompassComponent } from '../compass/compass.component';
 
 @Component({
@@ -12,8 +14,21 @@ import { CompassComponent } from '../compass/compass.component';
   styleUrl: './wind.component.css'
 })
 export class WindComponent {
-  @Input() wind_speed!: number;
-  @Input() wind_direction!: number;
+  wind_speed!: number;
+  wind_direction!: number;
+  weather_service = inject(WeatherService);
+  private wind_speed_subscription!: Subscription;
+  private wind_direction_subscription!: Subscription;
+
+  ngOnInit() {
+    this.wind_speed_subscription = this.weather_service.get_wind_speed().subscribe(wind_speed => this.wind_speed = wind_speed);
+    this.wind_direction_subscription = this.weather_service.get_wind_direction().subscribe(wind_direction => this.wind_direction = wind_direction);
+  }
+
+  ngOnDestroy() {
+    if (this.wind_speed_subscription) this.wind_speed_subscription.unsubscribe();
+    if (this.wind_direction_subscription) this.wind_direction_subscription.unsubscribe();
+  }
 
   get_wind_direction(degrees: number): string {
     // Ensure degrees are within the range of 0 to 360

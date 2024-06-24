@@ -1,8 +1,9 @@
 <div class="flex flex-col w-auto p-4 blur-box h-full">
+    <p class="text-xl mb-2 text-black">Precipitation</p>
     <div *ngFor="let precipitation_chance of precipitation_chances; let i = index">
         <div class="flex flex-row justify-between mx-2 my-2">
-            <p class="text-xs text-black">Day</p>
-            <p class="text-black text-xl font-bold">{{precipitation_chance}}</p>
+            <p class="text-xs text-black">{{days[i]}}</p>
+            <p class="text-black text-xl font-bold">{{precipitation_chance}}%</p>
         </div>
         <div *ngIf="i + 1 < precipitation_chances.length" class="flex flex-grow h-px bg-black border-black rounded-md"></div>
     </div>

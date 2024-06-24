@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DateTime } from 'luxon'
-
+import { Subscription } from 'rxjs';
+import { WeatherService } from '../../weather.service';
 @Component({
   selector: 'app-city-header',
   standalone: true,
@@ -9,27 +10,23 @@ import { DateTime } from 'luxon'
   styleUrl: './city-header.component.css'
 })
 export class CityHeaderComponent {
-  @Input() city!: string;
-  @Input() temperature!: number;
+  temperature!: number;
+  city_state!: string;
+  city_query: string = "";
+  weather_service = inject(WeatherService);
+  private temperature_subscription!: Subscription;
+  private city_subscription!: Subscription;
 
-  // time: string = this.get_current_time(); // Initialize time with current time
-  // private intervalId?: any; // Variable to hold the interval ID
+  // FIXME: fix the time
+  // FIXME: search bar
 
-  // ngOnInit() {
-  //   // Update time every 5 seconds
-  //   this.intervalId = setInterval(() => {
-  //     this.time = this.get_current_time();
-  //   }, 5000); // 5000 milliseconds = 5 seconds
-  // }
+  ngOnInit() {
+    this.temperature_subscription = this.weather_service.get_temperature().subscribe(temp => this.temperature = temp);
+    this.city_subscription = this.weather_service.get_city_state().subscribe(city_state => this.city_state = city_state);
+  }
 
-  // ngOnDestroy() {
-  //   // Clear the interval when the component is destroyed to prevent memory leaks
-  //   if (this.intervalId) {
-  //     clearInterval(this.intervalId);
-  //   }
-  // }
-
-  private get_current_time(): string {
-    return DateTime.now().toLocaleString(DateTime.TIME_SIMPLE);
+  ngOnDestroy() {
+    if (this.temperature_subscription) this.temperature_subscription.unsubscribe();
+    if (this.city_subscription) this.city_subscription.unsubscribe();
   }
 }

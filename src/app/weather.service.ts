@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export type WeatherObject = {
@@ -71,11 +71,14 @@ export type WeatherObject = {
 })
 export class WeatherService {
  private city!: string;
- private dataSubject = new BehaviorSubject<WeatherObject | null>(null);
+ private weather_data_subject = new BehaviorSubject<WeatherObject | null>(null);
+ private weather_data$ = this.weather_data_subject.asObservable();
 
   constructor(private http: HttpClient) { }
 
   search_city(city: string): void {
+    this.city = city;
+
     const headers = new HttpHeaders().set("X-Api-Key", "zSYVKpJURdCT4e7f4r8beA==gSnnunfC6TnY1yjJ");
     this.http.get<any[]>(`https://api.api-ninjas.com/v1/geocoding?city=${city}`, { headers })
       .pipe(map(response => response[0]))
@@ -98,76 +101,104 @@ export class WeatherService {
       timezone: 'America/Chicago'
     };
 
-    console.log(longitude, latitude)
-
     this.http.get<WeatherObject>(url, { params })
       .subscribe({
-        next: data => this.dataSubject.next(data),
+        next: data => this.weather_data_subject.next(data),
         error: error => console.error(error)
       });
   }
 
-  getWeatherUpdates() {
-    return this.dataSubject.asObservable();
+  // FIXME: 
+  get_city_state() {
+    return this.weather_data$.pipe(
+      map(city_state => {
+        return this.city;
+      })
+      )
   }
 
-  get_wind_speed(istoday: boolean): number {
-    const data = this.dataSubject.value;
-    if (!data) return 0;
-    return istoday ? data.current.wind_speed_10m : data.daily.wind_speed_10m_max[1];
+  get_wind_speed(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return data.current.wind_speed_10m;
+      })
+    );
   }
 
-  get_wind_direction(istoday: boolean): number {
-    const data = this.dataSubject.value;
-    if (!data) return 0;
-    return istoday ? data.current.wind_direction_10m : data.daily.wind_direction_10m_dominant[1];
+  get_wind_direction(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return data.current.wind_direction_10m;
+      })
+    );
   }
 
-  get_temp_high(istoday: boolean): number {
-    const data = this.dataSubject.value;
-    if (!data) return 0;
-    return data.daily.temperature_2m_max[istoday ? 0 : 1];
+  get_temperature(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return Math.round(data.current.temperature_2m);
+      })
+    );
   }
 
-  get_temp_low(istoday: boolean): number {
-    const data = this.dataSubject.value;
-    if (!data) return 0;
-    return data.daily.temperature_2m_min[istoday ? 0 : 1];
+  get_humidity(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return data.current.relative_humidity_2m;
+      })
+    );
   }
 
-  get_humidity(istoday: boolean): number {
-    const data = this.dataSubject.value;
-    if (!data) return 0;
-    return data.current.relative_humidity_2m;
+  get_uv_index(): Observable<any> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return data.daily.uv_index_max[0];
+      })
+    );
   }
 
-  get_precipitation_forecast(): any {
-    const data = this.dataSubject.value;
-    if (!data) return null;
-    return data.daily.precipitation_sum;
+  get_temperature_high(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return Math.round(data.daily.temperature_2m_max[0]);
+      })
+    );
   }
 
-  get_temperature_forecast(): any {
-    const data = this.dataSubject.value;
-    if (!data) return null;
-    return data.daily.temperature_2m_max;
+  get_temperature_low(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return Math.round(data.daily.temperature_2m_min[0]);
+      })
+    );
   }
 
-  get_sunrise(): any {
-    const data = this.dataSubject.value;
-    if (!data) return null;
-    return data.daily.sunrise;
-  }
+  get_temperature_forecast(): Observable<number[]> {
+    const expected_length = 7;
+    const hi_weight = 0.75;
+    const lo_weight = 1 - hi_weight;
 
-  get_sunset(): any {
-    const data = this.dataSubject.value;
-    if (!data) return null;
-    return data.daily.sunset;
-  }
-
-  get_uv_index(): any {
-    const data = this.dataSubject.value;
-    if (!data) return null;
-    return data.daily.uv_index_max;
+    const max_rand_temp = 84;
+    const min_rand_temp = max_rand_temp - 20;
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) {
+          return Array.from({ length: expected_length }, (_, i) => {
+            return Math.floor(Math.random() * (max_rand_temp - min_rand_temp + 1)) + min_rand_temp;
+          })
+        } else {
+          return data.daily.temperature_2m_max.map((max, i) => {
+            return max * hi_weight + data.daily.temperature_2m_min[i] * lo_weight;
+          });
+        }
+      })
+    )
   }
 }

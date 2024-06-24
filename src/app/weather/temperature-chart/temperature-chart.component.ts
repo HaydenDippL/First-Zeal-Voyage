@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import Chroma from 'chroma-js';
 import { DateTime } from 'luxon';
-import { arrayBuffer } from 'stream/consumers';
+import { WeatherService } from '../../weather.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-temperature-chart',
@@ -14,12 +15,20 @@ import { arrayBuffer } from 'stream/consumers';
   styleUrl: './temperature-chart.component.css'
 })
 export class TemperatureChartComponent {
-  @Input() temperatures!: number[];
+  temperatures!: number[];
   temperature_chart_data!: any;
   temperature_chart_options!: any;
-  
+  weather_service = inject(WeatherService);
+  private temperatures_subscription!: Subscription;
+
   ngOnInit() {
-    // const data = [77, 82, 93, 96, 95, 98, 90];
+    this.temperatures_subscription = this.weather_service.get_temperature_forecast().subscribe(temperatures => {
+      this.temperatures = temperatures;
+      this.update_chart();
+    })
+  }
+  
+  update_chart() {
     const colors = this.temperatures.map(temp => this.temperature_color_scale(temp));
     const now: DateTime = DateTime.now();
 

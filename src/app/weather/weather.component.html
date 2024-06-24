@@ -3,20 +3,20 @@
 }">
     <div class="w-3/4">
         <div class="w-full">
-            <app-city-header [city]="city" [temperature]="get_temperature()"/>
+            <app-city-header/>
         </div>
         <div class="flex flex-row gap-x-4 mt-8">
             <div class="flex-grow">
-                <app-humidity [humidity]="get_humidity()"/>
+                <app-humidity/>
             </div>
             <div class="flex-grow">
-                <app-uv-index [uv]="get_uv_index()"/>
+                <app-uv-index/>
             </div>
             <div class="flex-grow">
-                <app-hi-lo [hi]="get_temperature_high()" [lo]="get_temperature_low()"/>
+                <app-hi-lo/>
             </div>
             <div class="flex-grow">
-                <app-wind [wind_speed]="get_wind_speed()" [wind_direction]="get_wind_direction()"/>
+                <app-wind/>
             </div>
         </div>
         <div class="flex flex-row mt-4 gap-x-8">
@@ -24,7 +24,7 @@
                 <app-precipitation/>
             </div>
             <div class="flex-grow">
-                <app-temperature-chart [temperatures]="get_temperature_forecast()"/>
+                <app-temperature-chart/>
             </div>
         </div>
     </div>

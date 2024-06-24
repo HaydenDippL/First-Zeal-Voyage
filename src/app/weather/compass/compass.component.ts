@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WeatherService } from '../../weather.service';
+import { Subscription } from 'rxjs';
 
 type coord = {
   x: number,
@@ -24,8 +26,12 @@ type line = {
 })
 export class CompassComponent {
   @Input() size!: number;
-  @Input() wind_speed!: number;
-  @Input() wind_direction!: number;
+  wind_speed!: number;
+  wind_direction!: number;
+  weather_service = inject(WeatherService);
+  private wind_speed_subscription!: Subscription;
+  private wind_direction_subscription!: Subscription;
+
   padding!: number;
   line_length!: number;
   radius!: number;
@@ -34,10 +40,18 @@ export class CompassComponent {
   dial_lines: line[] = [];
 
   ngOnInit() {
+    this.wind_speed_subscription = this.weather_service.get_wind_speed().subscribe(wind_speed => this.wind_speed = wind_speed);
+    this.wind_direction_subscription = this.weather_service.get_wind_direction().subscribe(wind_direction => this.wind_direction = wind_direction);
+
     this.line_length = this.size / 20;
     this.padding = this.size / 10;
     this.radius = this.size / 2 - this.padding;
     this.create_dial();
+  }
+
+  ngOnDestroy() {
+    if (this.wind_speed_subscription) this.wind_speed_subscription.unsubscribe();
+    if (this.wind_direction_subscription) this.wind_direction_subscription.unsubscribe();
   }
 
   create_dial(): void {
