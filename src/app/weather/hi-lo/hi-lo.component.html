@@ -1,28 +1,11 @@
-<!-- <div>
-    <div class="inline-block">
-        <div class="text">Highs and Lows</div>
-        <div class="mb-2">
-            <i class="pi pi-arrow-up text-red-500">90°</i>
-        </div>
-        <div>
-            <i class="pi pi-arrow-down text-blue-500">75°</i>
-        </div>
-    </div>
-</div> -->
-
-<!-- <div class="blur-box text-black p-4 rounded-md h-full">
-    <p class="text-md font-extralight">High and Low</p>
-    <p class="text-4xl mt-4 font-semibold">90° vs 70°</p>
-</div> -->
-
 <div class="blur-box text-black p-4 rounded-md h-full flex flex-row items-center justify-around">
     <div>
         <p class="text-xl mb-20">High and Low</p>
-        <p class="text-xs mt-2 text-slate-500"> The high increased 18°</p>
-        <p class="text-xs mt-0 text-slate-500"> The low increased 10°</p>
+        <p class="text-xs mt-2 text-slate-500">{{get_hi_change_message()}}</p>
+        <p class="text-xs mt-0 text-slate-500">{{get_lo_change_message()}}</p>
     </div>
     <div class="flex flex-col items-center">
-        <p class="text-5xl mb-3">↑ {{hi}}°</p>
-        <p class="text-5xl mt-8">↓ {{lo}}°</p>
+        <p class="text-5xl mb-3">↑ {{hi_today}}°</p>
+        <p class="text-5xl mt-8">↓ {{lo_today}}°</p>
     </div>
 </div>

@@ -1,9 +1,10 @@
 <div class="flex w-auto min-w-80 p-4 blur-box h-full">
     <div class="flex flex-col px-4 justify-start items-start mr-16 text-black">
         <p class="text-xl">Wind ༄</p>
-        <p class="text-5xl mt-6">{{wind_speed}} mph</p>
-        <p class="text-xs mt-4 text-slate-500">{{wind_direction}}° {{get_wind_direction(wind_direction)}}</p>
-        <p class="text-xs text-slate-500">↓0.8 mph vs yesterday</p>
+        <p class="text-5xl mt-6">{{wind_speed_today}} mph</p>
+        <p class="text-xs mt-3 text-slate-500">{{wind_direction}}° {{get_wind_direction(wind_direction)}}</p>
+        <p class="text-xs text-slate-500">{{get_wind_change_message()}}</p>
+        <p class="text-xs text-slate-500">{{wind_gust_speed.toFixed(1)}} mph gusts</p>
     </div>
-    <app-compass [size]="150"/>
+    <app-compass [size]="170"/>
 </div>

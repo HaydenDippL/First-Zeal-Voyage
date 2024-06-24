@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WeatherService } from '../../weather.service';
+import { WeatherService, Day } from '../../weather.service';
 import { Subscription } from 'rxjs';
 
 type coord = {
@@ -40,7 +40,7 @@ export class CompassComponent {
   dial_lines: line[] = [];
 
   ngOnInit() {
-    this.wind_speed_subscription = this.weather_service.get_wind_speed().subscribe(wind_speed => this.wind_speed = wind_speed);
+    this.wind_speed_subscription = this.weather_service.get_wind_speed(Day.TODAY).subscribe(wind_speed => this.wind_speed = wind_speed);
     this.wind_direction_subscription = this.weather_service.get_wind_direction().subscribe(wind_direction => this.wind_direction = wind_direction);
 
     this.line_length = this.size / 20;

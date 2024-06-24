@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export enum Day {
+  YESTERDAY = 0,
+  TODAY = 1
+};
+
 export type WeatherObject = {
   latitude: number;
   longitude: number;
@@ -59,7 +64,8 @@ export type WeatherObject = {
     sunset: string[];
     uv_index_max: number[];
     uv_index_clear_sky_max: number[];
-    precipitation_sum: number[];
+    weather_code: number[];
+    precipitation_probability_max: number[];
     wind_speed_10m_max: number[];
     wind_gusts_10m_max: number[];
     wind_direction_10m_dominant: number[]
@@ -94,7 +100,7 @@ export class WeatherService {
       latitude: latitude,
       longitude: longitude,
       current: 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,showers,snowfall,wind_speed_10m,wind_direction_10m,wind_gusts_10m',
-      daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max',
+      daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,weather_code,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max',
       temperature_unit: 'fahrenheit',
       wind_speed_unit: 'mph',
       precipitation_unit: 'inch',
@@ -114,16 +120,44 @@ export class WeatherService {
       map(city_state => {
         return this.city;
       })
-      )
+    )
   }
 
-  get_wind_speed(): Observable<number> {
+  get_weather_codes() {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return [];
+        else return data.daily.weather_code;
+      })
+    )
+  }
+
+  get_precipitation_probabilities() {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return [];
+        else return data.daily.precipitation_probability_max;
+      })
+    )
+  }
+
+  get_wind_speed(day: Day): Observable<number> {
     return this.weather_data$.pipe(
       map(data => {
         if (!data) return 0;
-        else return data.current.wind_speed_10m;
+        else if (day == Day.TODAY) return data.current.wind_speed_10m;
+        else return data.daily.wind_speed_10m_max[day];
       })
     );
+  }
+
+  get_wind_gust_speed(): Observable<number> {
+    return this.weather_data$.pipe(
+      map(data => {
+        if (!data) return 0;
+        else return data.current.wind_gusts_10m;
+      })
+    )
   }
 
   get_wind_direction(): Observable<number> {
@@ -153,29 +187,29 @@ export class WeatherService {
     );
   }
 
-  get_uv_index(): Observable<any> {
+  get_uv_index(day: Day): Observable<number> {
     return this.weather_data$.pipe(
       map(data => {
         if (!data) return 0;
-        else return data.daily.uv_index_max[0];
+        else return Number(data.daily.uv_index_max[day].toFixed(1));
       })
     );
   }
 
-  get_temperature_high(): Observable<number> {
+  get_temperature_high(day: Day): Observable<number> {
     return this.weather_data$.pipe(
       map(data => {
         if (!data) return 0;
-        else return Math.round(data.daily.temperature_2m_max[0]);
+        else return Math.round(data.daily.temperature_2m_max[day]);
       })
     );
   }
 
-  get_temperature_low(): Observable<number> {
+  get_temperature_low(day: Day): Observable<number> {
     return this.weather_data$.pipe(
       map(data => {
         if (!data) return 0;
-        else return Math.round(data.daily.temperature_2m_min[0]);
+        else return Math.round(data.daily.temperature_2m_min[day]);
       })
     );
   }
